@@ -15,7 +15,7 @@ class RSAChat {
         this.my_public_key = this.jsencrypt.getPublicKey()
         this.my_private_key = this.jsencrypt.getPrivateKey()
 
-        this.socket = io("ws://127.0.0.1:8090", {
+        this.socket = io("ws://chat-rsa.herokuapp.com:8090", {
             transports: ['websocket']
         });
         this._bindSocketEvents();
