@@ -1,13 +1,12 @@
-const io = require('socket.io')(process.env.SOCKET_PORT || 3000)
+const socketIO = require('socket.io')
 const express = require('express');
-const app = express();
 const porta = process.env.PORT || 8080;
 
-app.use(express.static('public'));
+const app = express()
+    .use(express.static('public'))
+    .listen(porta, () => console.log(`Listening on ${ porta }`));
 
-app.listen(porta, ()=>{
-    console.log("Web server inicializado")
-})
+const io = socketIO(app);
 
 /**
  * Quando o cliente se conectar
