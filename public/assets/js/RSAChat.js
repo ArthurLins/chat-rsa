@@ -15,7 +15,9 @@ class RSAChat {
         this.my_public_key = this.jsencrypt.getPublicKey()
         this.my_private_key = this.jsencrypt.getPrivateKey()
 
-        this.socket = io("chat-rsa.herokuapp.com:8090");
+        this.socket = io("wss://chat-rsa.herokuapp.com:3000", {
+            transports: ['websocket']
+        });
         this._bindSocketEvents();
         this._bindViewEvents();
 
@@ -46,7 +48,7 @@ class RSAChat {
             self.socket.emit("envia-chave-publica", self.my_public_key);
         });
 
-        this.socket.on('chave-publica', (data) => {
+        this.socket.on('chave-publica', () => {
             self.socket.emit("envia-chave-publica", self.my_public_key);
         })
 
