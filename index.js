@@ -1,9 +1,11 @@
 const io = require('socket.io')(8090)
 const express = require('express');
 const app = express();
+const porta = process.env.PORT || 8080;
 
 app.use(express.static('public'));
-app.listen(8080, ()=>{
+
+app.listen(porta, ()=>{
     console.log("Web server inicializado")
 })
 
