@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <title>RSAChat</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">Chat RSA</div>
+                <div class="panel-body">
+                    <div class="container msg-box">
+                    </div>
+                    <div class="panel-footer">
+                        <div class="input-group">
+                            <input type="text" class="form-control msg-text">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default send-msg" type="button">Send</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LIBS -->
+    <script src="assets/js/libs/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/libs/bootstrap.min.js"></script>
+    <script src="assets/js/libs/jsencrypt.min.js"></script>
+    <script src="assets/js/libs/socket.io.js"></script>
+    <!-- CLASSES -->
+    <script src="assets/js/ChatView.js"></script>
+    <script src="assets/js/RSAChat.js"></script>
+    <script>
+        new RSAChat(new ChatView(".msg-box")); 
+    </script>
+</body>
+
+</html>
