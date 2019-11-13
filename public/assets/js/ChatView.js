@@ -26,17 +26,21 @@ class ChatView {
         })
     }
 
+    _htmlEntities(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    
     _scrollDown() {
         $(this.elem).scrollTop($(this.elem)[0].scrollHeight);
     }
 
     addMeMessage(msg) {
-        $(this.elem).append(this.msg_me_template.replace("{user}", "Você").replace("{msg}", msg));
+        $(this.elem).append(this.msg_me_template.replace("{user}", "Você").replace("{msg}", this._htmlEntities(msg)));
         this._scrollDown();
     }
 
     addMessage(name, msg) {
-        $(this.elem).append(this.msg_template.replace("{user}", name).replace("{msg}", msg));
+        $(this.elem).append(this.msg_template.replace("{user}", this._htmlEntities(name)).replace("{msg}", this._htmlEntities(msg)));
         this._scrollDown();
     }
 
