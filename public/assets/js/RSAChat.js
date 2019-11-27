@@ -51,7 +51,7 @@ class RSAChat {
         var self = this;
 
         this.socket.on('connect', () => {
-            console.log("[✅] Tunnel de comunicação conectado. Identificador: "+ this.socket.sessionid)
+            console.log("[✅] Tunnel de comunicação conectado. Identificador: "+ this.socket.id)
             self.socket.emit("envia-chave-publica", self.my_public_key)
             console.log("[⬆] Enviando sua chave publica para o servidor.")
         });
