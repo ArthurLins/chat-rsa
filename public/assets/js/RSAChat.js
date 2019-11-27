@@ -12,8 +12,12 @@ class RSAChat {
         this.jsencrypt = new JSEncrypt({
             default_key_size: 512
         })
+
         this.my_public_key = this.jsencrypt.getPublicKey()
         this.my_private_key = this.jsencrypt.getPrivateKey()
+
+        console.log("[🔑] Chave publica criada: \n" + this.my_public_key)
+        console.log("[🔑] Chave privada criada: \n" + this.my_private_key)
 
         this.socket = io({
             transports: ['websocket']
@@ -31,6 +35,7 @@ class RSAChat {
                 id: id,
                 payload: self.jsencrypt.encrypt(msg)
             });
+                console.log("[⬆] Enviando para: "+id+" uma mensagem.\n Conteudo: []")
         });
     }
 
@@ -45,27 +50,38 @@ class RSAChat {
         var self = this;
 
         this.socket.on('connect', () => {
-            self.socket.emit("envia-chave-publica", self.my_public_key);
+            console.log("[✅] Tunnel de comunicação conectado.")
+            self.socket.emit("envia-chave-publica", self.my_public_key)
+            console.log("[⬆] Enviando chave publica para o servidor.")
         });
 
         this.socket.on('chave-publica', () => {
-            self.socket.emit("envia-chave-publica", self.my_public_key);
+            console.log("[⬇] Pedido de transmissão da chave publica")
+            self.socket.emit("envia-chave-publica", self.my_public_key)
+            console.log("[⬆] Enviando chave publica para o servidor.")
         })
 
         this.socket.on('recebe-chave-publica', (data) => {
+            console.log("[⬇] Recebe a chave publica de: " + data.id);
             self.chaves[data.id] = data.chave_publica;
+            console.log("[✅] Adiciona chave recebida na lista de chaves");
         })
 
         this.socket.on('exit', (data) => {
+            console.log("[⬇] Recebe aviso que o usuário " + data.id + " saiu.");
             delete self.chaves[data.id];
+            console.log("[✅] Remove a chave do usuário que saiu");
         });
 
         this.socket.on('message', (data) => {
             if (self.chaves[data.id] === undefined) {
                 return
             }
+            console.log("[⬇] Recebe mensagem criptografade de " + data.id + ".\n Conteudo: ["+data.msg+"]");
             self.jsencrypt.setPrivateKey(self.my_private_key);
-            this.ui.addMessage(data.id, self.jsencrypt.decrypt(data.msg));
+            const result = self.jsencrypt.decrypt(data.msg)
+            console.log("[✅] Descriptografa mensagem. \nResultado: ["+result+"]");
+            this.ui.addMessage(data.id, result);
         });
     }
 
