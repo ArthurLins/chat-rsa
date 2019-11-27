@@ -36,7 +36,7 @@ class RSAChat {
                 id: id,
                 payload: payload
             });
-                console.log("[⬆] Enviando para: "+id+" uma mensagem.\n Conteudo: ["+payload+"]")
+                console.log("[⬆] Enviando para: "+id+" uma mensagem.\nConteudo: ["+payload+"]")
         });
     }
 
@@ -51,15 +51,15 @@ class RSAChat {
         var self = this;
 
         this.socket.on('connect', () => {
-            console.log("[✅] Tunnel de comunicação conectado.")
+            console.log("[✅] Tunnel de comunicação conectado. Identificador: "+ this.socket.socket.sessionid)
             self.socket.emit("envia-chave-publica", self.my_public_key)
-            console.log("[⬆] Enviando chave publica para o servidor.")
+            console.log("[⬆] Enviando sua chave publica para o servidor.")
         });
 
         this.socket.on('chave-publica', () => {
             console.log("[⬇] Pedido de transmissão da chave publica")
             self.socket.emit("envia-chave-publica", self.my_public_key)
-            console.log("[⬆] Enviando chave publica para o servidor.")
+            console.log("[⬆] Enviando sua chave publica para o servidor.")
         })
 
         this.socket.on('recebe-chave-publica', (data) => {
@@ -78,7 +78,7 @@ class RSAChat {
             if (self.chaves[data.id] === undefined) {
                 return
             }
-            console.log("[⬇] Recebe mensagem criptografade de " + data.id + ".\n Conteudo: ["+data.msg+"]");
+            console.log("[⬇] Recebe mensagem criptografada de " + data.id + ".\n Conteudo: ["+data.msg+"]");
             self.jsencrypt.setPrivateKey(self.my_private_key);
             const result = self.jsencrypt.decrypt(data.msg)
             console.log("[✅] Descriptografa mensagem. \nResultado: ["+result+"]");
