@@ -31,11 +31,12 @@ class RSAChat {
         var self = this;
         Object.entries(this.chaves).forEach(([id, chave]) => {
             self.jsencrypt.setPublicKey(chave);
+            const payload = self.jsencrypt.encrypt(msg);
             self.socket.emit("message", {
                 id: id,
-                payload: self.jsencrypt.encrypt(msg)
+                payload: payload
             });
-                console.log("[⬆] Enviando para: "+id+" uma mensagem.\n Conteudo: []")
+                console.log("[⬆] Enviando para: "+id+" uma mensagem.\n Conteudo: ["+payload+"]")
         });
     }
 
